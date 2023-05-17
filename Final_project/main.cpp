@@ -6,7 +6,7 @@ GLMmodel * body = NULL;
 GLMmodel * uparmR = NULL;
 GLMmodel * lowarmR = NULL;
 int show[4]={1,1,1,1};///用show[i]來決定要不要顯示
-int ID=0;///0:頭 1:身體 2:上手臂 3:下手臂
+int ID=3;///0:頭 1:身體 2:上手臂 3:下手臂
 void keyboard(unsigned char key,int x,int y)
 {
     if(key=='0') ID=0;
@@ -46,17 +46,27 @@ void display()
         if(show[1]) glmDraw(body,GLM_MATERIAL);
 
         glPushMatrix();
-            glTranslatef(teapotX,teapotY,0);
+            glTranslatef(-1.260000,+0.440000,0);
+            glRotatef(angle,0,0,1);
+            //glTranslatef(teapotX,teapotY,0);
+            glTranslatef(1.260000,-0.440000,0);
 
             if(ID==2)glColor3f(1,0,0);///選定的,設紅色
             else glColor3f(1,1,1);///沒選定,設白色
             if(show[2]) glmDraw(uparmR,GLM_MATERIAL);
         glPopMatrix();
 
+        glTranslatef(-1.193333,+0.600000,0);
+        glRotatef(angle,0,0,1);
+        glTranslatef(1.193333,-0.600000,0);
+        //glTranslatef(teapotX,teapotY,0);
+
         if(ID==3)glColor3f(1,0,0);///選定的,設紅色
         else glColor3f(1,1,1);///沒選定,設白色
         if(show[3]) glmDraw(lowarmR,GLM_MATERIAL);
     glPopMatrix();
+    glColor3f(0,1,0);
+    glutSolidTeapot(0.02);
     glutSwapBuffers();
 
 }
@@ -67,6 +77,7 @@ void motion(int x,int y)
     teapotY -= (y - oldY)/150.0;
     oldX = x;
     oldY = y;
+    angle=x;
     printf("glTranslatef(%f,%f,0)\n",teapotX,teapotY);
     glutPostRedisplay();
 }
